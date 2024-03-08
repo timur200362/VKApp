@@ -1,8 +1,10 @@
 package com.example.vkapp.presentation.mvi
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.vkapp.domain.usecase.GetProductsUseCase
+import com.example.vkapp.domain.usecase.SearchProductUseCase
 import com.example.vkapp.mviRealisation.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,48 +14,49 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ProductsViewModel(
-    getProductsUseCase: GetProductsUseCase
+    getProductsUseCase: GetProductsUseCase,
+    searchProductUseCase: SearchProductUseCase
 ): BaseViewModel<ProductsScreenState, ProductsScreenUiEvent>(){
 
     private val reducer: ProductsReducer = ProductsReducer(
         ProductsScreenState.initial(),
-        getProductsUseCase
+        getProductsUseCase,
+        searchProductUseCase
     )
 
-    private var skip = 0
     private val limit = 20
-
-    private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> = _loading
-
-    private val _navigateToProductDetail = MutableSharedFlow<Int?>()
-    val navigateToProductDetail: SharedFlow<Int?> = _navigateToProductDetail
+    private val skip = 0
+    private val page = 1
+    val title = mutableStateOf("")
 
     init {
-        sendEvent(ProductsScreenUiEvent.GetProducts(limit, skip))
+        getProducts(ProductsScreenUiEvent.GetProducts(limit, skip, page))
+        searchProduct(ProductsScreenUiEvent.SearchProduct(title.toString()))
     }
 
     override val state: StateFlow<ProductsScreenState>
         get() = reducer.state
 
-    private fun sendEvent(event: ProductsScreenUiEvent) {
+    fun getProducts(event: ProductsScreenUiEvent) {
         viewModelScope.launch (Dispatchers.IO){
             try {
-                _loading.value = true
                 reducer.sendEvent(event)
             }
             catch (throwable: Throwable){
                 println("Произошла ошибка!")
-                Log.e("ProductsViewModel","Ошибка: $throwable")
-            }
-            finally {
-                _loading.value = false
+                Log.e("ProductsViewModel - Get","Ошибка: $throwable")
             }
         }
     }
-    fun navigateToProductDetailScreen(productId: Int){
-        viewModelScope.launch {
-            _navigateToProductDetail.emit(productId)
+    fun searchProduct(event: ProductsScreenUiEvent){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                reducer.sendEvent(event)
+            }
+            catch (throwable: Throwable){
+                println("Произошла ошибка!")
+                Log.e("ProductsViewModel - Search","Ошибка: $throwable")
+            }
         }
     }
 }
