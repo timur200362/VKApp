@@ -1,9 +1,12 @@
 package com.example.vkapp.presentation.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -47,38 +50,44 @@ fun DisplayInfo(
             )
             Text(
                 text = product.title,
-                modifier = Modifier.padding(top = 30.dp),
+                modifier = Modifier
+                    .padding(top = 30.dp)
+                    .fillMaxWidth(),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
             Text(
                 text = "Категория: ${product.category}",
-                modifier = Modifier.padding(top = 30.dp),
+                modifier = Modifier.padding(start = 10.dp,top = 20.dp),
                 fontSize = 18.sp,
             )
             Text(
                 text = "Производитель: ${product.brand}",
-                modifier = Modifier.padding(top = 30.dp),
+                modifier = Modifier.padding(start = 10.dp, top = 20.dp),
                 fontSize = 18.sp,
             )
             Text(
                 text = "Цена: ${product.price}",
                 color = Color(255, 140, 0),
-                modifier = Modifier.padding(top = 30.dp),
+                modifier = Modifier.padding(start = 10.dp, top = 20.dp),
                 fontSize = 18.sp
             )
             Text(
                 text = "Описание",
-                modifier = Modifier.padding(top = 30.dp),
+                modifier = Modifier
+                    .padding(top = 15.dp)
+                    .fillMaxWidth(),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
             Text(
                 text = product.description,
-                modifier = Modifier.padding(top = 30.dp),
-                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 10.dp)
+                    .fillMaxWidth(),
+                fontSize = 18.sp
             )
         }
     }

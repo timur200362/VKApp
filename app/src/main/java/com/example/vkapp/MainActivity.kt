@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.example.vkapp.presentation.screens.HomeScreen
 import com.example.vkapp.presentation.screens.ProductsListScreen
 import com.example.vkapp.ui.theme.VKAppTheme
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

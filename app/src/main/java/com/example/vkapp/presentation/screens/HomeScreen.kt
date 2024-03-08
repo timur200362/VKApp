@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = "home"
+    startDestination: String = "home",
 ){
     NavHost(
         modifier = modifier,
@@ -78,6 +79,7 @@ fun ProductsListScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .clickable(onClick = { onNavigateToDetail(product.id) })
+                    .fillMaxWidth()
             ){
                 AsyncImage(
                     model = product.thumbnail,
@@ -89,19 +91,20 @@ fun ProductsListScreen(
                 Column {
                     Text(
                         text = product.title,
+                        modifier = Modifier.fillMaxWidth(),
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = product.category,
                         color = Color.Gray,
+                        modifier = Modifier.fillMaxWidth(),
                         fontSize = 18.sp
                     )
                 }
             }
-            if (state.productsList.indexOf(product) == state.productsList.size && !loading) {
+            if (state.productsList.indexOf(product) == state.productsList.size - 1  && !loading) {
                 Button(
-                    onClick = { state.productsList },
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = { state.productsList }
                 ) {
                     Text("Загрузить еще")
                 }
