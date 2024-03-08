@@ -1,4 +1,4 @@
-package com.example.vkapp.presentation
+package com.example.vkapp.presentation.mvi
 
 import com.example.vkapp.data.memory.Product
 import com.example.vkapp.mviRealisation.UiState

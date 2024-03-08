@@ -7,7 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
-import com.example.vkapp.presentation.ProductsListScreen
+import com.example.vkapp.presentation.screens.HomeScreen
+import com.example.vkapp.presentation.screens.ProductsListScreen
 import com.example.vkapp.ui.theme.VKAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             VKAppTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    ProductsListScreen()
+                    HomeScreen()
                 }
             }
         }

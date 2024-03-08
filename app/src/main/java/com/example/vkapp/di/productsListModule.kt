@@ -5,7 +5,7 @@ import com.example.vkapp.data.remote.ApiService
 import com.example.vkapp.data.repository.GetProductsRepository
 import com.example.vkapp.domain.repository.GetProductsRepositoryImpl
 import com.example.vkapp.domain.usecase.GetProductsUseCase
-import com.example.vkapp.presentation.ProductsViewModel
+import com.example.vkapp.presentation.mvi.ProductsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
