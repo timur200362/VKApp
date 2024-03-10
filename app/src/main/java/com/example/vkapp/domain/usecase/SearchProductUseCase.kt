@@ -6,7 +6,7 @@ import com.example.vkapp.data.repository.ProductsRepository
 class SearchProductUseCase(
     private val productsRepository: ProductsRepository
 ) {
-    suspend fun execute(title:String):List<Product>{
+    suspend fun execute(title:String):Product{
         return productsRepository.searchProduct(title)
     }
 }

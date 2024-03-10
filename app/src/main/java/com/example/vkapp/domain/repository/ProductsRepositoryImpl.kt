@@ -11,7 +11,7 @@ class ProductsRepositoryImpl(
         return apiService.loadProducts(limit, skip).products
     }
 
-    override suspend fun searchProduct(title: String): List<Product> {
+    override suspend fun searchProduct(title: String): Product {
         return apiService.searchProduct(title)
     }
 }

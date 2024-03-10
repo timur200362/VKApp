@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
@@ -33,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,6 +46,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.compose.AsyncImage
+import com.example.vkapp.data.memory.Product
 import com.example.vkapp.presentation.mvi.ProductsScreenUiEvent
 import com.example.vkapp.presentation.mvi.ProductsViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -62,8 +66,17 @@ fun HomeScreen(
             ProductsListScreen (
                 onNavigateToDetail = {productId ->
                     navController.navigate("detail/$productId")
-                }
+                },
+//                onNavigateToFoundProduct = {foundProduct ->
+//                    navController.navigate("found/$foundProduct")
+//                }
             )
+        }
+        composable(
+            "found/{foundProduct}",
+            arguments = listOf(navArgument("foundProduct") {defaultValue = 0})
+        ) {backStackEntry ->
+            backStackEntry.arguments?.getString("foundProduct")?.let { FoundProductScreen(it) }
         }
         composable(
             "detail/{productId}",
@@ -78,7 +91,8 @@ fun HomeScreen(
 @Composable
 fun ProductsListScreen(
     viewModel: ProductsViewModel = koinViewModel(),
-    onNavigateToDetail: (Int) -> Unit
+    onNavigateToDetail: (Int) -> Unit,
+    //onNavigateToFoundProduct: (String) -> Unit
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -99,15 +113,17 @@ fun ProductsListScreen(
             )
             TextField(
                 value = viewModel.title.value,
-                onValueChange = { newText ->
-                    viewModel.title.value = newText
-                    viewModel.searchProduct(ProductsScreenUiEvent.SearchProduct(newText))
-                },
+                onValueChange = { viewModel.title.value = it },
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 40.dp, bottom = 30.dp, end = 30.dp),
                 placeholder = { Text(text ="Search...") },
                 singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
+                keyboardActions = KeyboardActions(onSearch = {
+                    viewModel.searchProduct(viewModel.title.value)
+                    //onNavigateToFoundProduct(foundProduct.toString())
+                })
             )
         }
         item {
@@ -121,10 +137,10 @@ fun ProductsListScreen(
                 textAlign = TextAlign.Center,
             )
         }
-        items(state.productsList) {product ->
+        items(state.productsList) {productsList ->
             Card (
                 modifier = Modifier
-                    .clickable(onClick = { onNavigateToDetail(product.id) })
+                    .clickable(onClick = { onNavigateToDetail(productsList.id) })
                     .fillMaxWidth()
                     .padding(vertical = 10.dp)
                     .shadow(10.dp)
@@ -134,7 +150,7 @@ fun ProductsListScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
                     AsyncImage(
-                        model = product.thumbnail,
+                        model = productsList.thumbnail,
                         contentDescription = null,
                         modifier = Modifier
                             .height(90.dp)
@@ -143,40 +159,17 @@ fun ProductsListScreen(
                     )
                     Column {
                         Text(
-                            text = product.title,
+                            text = productsList.title,
                             modifier = Modifier.fillMaxWidth(),
                             fontWeight = FontWeight.Bold,
                         )
                         Text(
-                            text = product.description,
+                            text = productsList.description,
                             color = Color.Gray,
                             modifier = Modifier.fillMaxWidth(),
                             fontSize = 16.sp
                         )
                     }
-                }
-            }
-        }
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                IconButton(onClick = { val skip = 20*(state.page-1)
-                    viewModel.getProducts(ProductsScreenUiEvent.GetProducts(20,skip,state.page))
-                }) {
-                    Icon(
-                        Icons.AutoMirrored.Default.NavigateBefore,
-                        "BeforePage"
-                    )
-                }
-                IconButton(onClick = {
-                    state.productsList
-                }) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.NavigateNext,
-                        "NextPage"
-                    )
                 }
             }
         }

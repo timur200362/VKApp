@@ -7,9 +7,6 @@ import com.example.vkapp.domain.usecase.GetProductsUseCase
 import com.example.vkapp.domain.usecase.SearchProductUseCase
 import com.example.vkapp.mviRealisation.BaseViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -30,14 +27,14 @@ class ProductsViewModel(
     val title = mutableStateOf("")
 
     init {
-        getProducts(ProductsScreenUiEvent.GetProducts(limit, skip, page))
-        searchProduct(ProductsScreenUiEvent.SearchProduct(title.toString()))
+        sendEvent(ProductsScreenUiEvent.GetProducts(limit, skip, page))
+        sendEvent(ProductsScreenUiEvent.SearchProduct(title.value))
     }
 
     override val state: StateFlow<ProductsScreenState>
         get() = reducer.state
 
-    fun getProducts(event: ProductsScreenUiEvent) {
+    private fun sendEvent(event: ProductsScreenUiEvent) {
         viewModelScope.launch (Dispatchers.IO){
             try {
                 reducer.sendEvent(event)
@@ -48,10 +45,10 @@ class ProductsViewModel(
             }
         }
     }
-    fun searchProduct(event: ProductsScreenUiEvent){
+    fun searchProduct(title: String){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                reducer.sendEvent(event)
+                sendEvent(ProductsScreenUiEvent.SearchProduct(title))
             }
             catch (throwable: Throwable){
                 println("Произошла ошибка!")
