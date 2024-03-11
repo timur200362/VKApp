@@ -66,17 +66,8 @@ fun HomeScreen(
             ProductsListScreen (
                 onNavigateToDetail = {productId ->
                     navController.navigate("detail/$productId")
-                },
-//                onNavigateToFoundProduct = {foundProduct ->
-//                    navController.navigate("found/$foundProduct")
-//                }
+                }
             )
-        }
-        composable(
-            "found/{foundProduct}",
-            arguments = listOf(navArgument("foundProduct") {defaultValue = 0})
-        ) {backStackEntry ->
-            backStackEntry.arguments?.getString("foundProduct")?.let { FoundProductScreen(it) }
         }
         composable(
             "detail/{productId}",
@@ -92,7 +83,6 @@ fun HomeScreen(
 fun ProductsListScreen(
     viewModel: ProductsViewModel = koinViewModel(),
     onNavigateToDetail: (Int) -> Unit,
-    //onNavigateToFoundProduct: (String) -> Unit
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -113,16 +103,21 @@ fun ProductsListScreen(
             )
             TextField(
                 value = viewModel.title.value,
-                onValueChange = { viewModel.title.value = it },
+                onValueChange = {
+                    viewModel.title.value = it
+//                    val filteredProducts = state.originalProductsList.filter { product ->
+//                        product.title.contains(it, ignoreCase = true) || product.description.contains(it, ignoreCase = true)
+//                    }
+                   },
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 40.dp, bottom = 30.dp, end = 30.dp),
+                    .padding(start = 40.dp, bottom = 30.dp, end = 30.dp)
+                    .clip(shape = RoundedCornerShape(8.dp)),
                 placeholder = { Text(text ="Search...") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = {
                     viewModel.searchProduct(viewModel.title.value)
-                    //onNavigateToFoundProduct(foundProduct.toString())
                 })
             )
         }

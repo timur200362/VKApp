@@ -18,11 +18,13 @@ class ProductsReducer(
         when (event) {
             is ProductsScreenUiEvent.GetProducts -> {
                 val productsList = getProductsUseCase.execute(event.limit, event.skip)
-                setState(oldState.copy(productsList))
+                setState(oldState.copy(
+                    productsList = productsList,
+                ))
             }
             is ProductsScreenUiEvent.SearchProduct -> {
-                val foundProduct = searchProductUseCase.execute(event.title)
-                setState(oldState.copy(product = foundProduct))
+                val foundProducts = searchProductUseCase.execute(event.title)
+                setState(oldState.copy(foundProducts))
             }
         }
     }

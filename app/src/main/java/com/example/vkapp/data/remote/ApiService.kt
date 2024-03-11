@@ -10,5 +10,5 @@ interface ApiService {
     suspend fun loadProducts(@Query("skip") skip: Int, @Query("limit") limit: Int): ProductsResponse
 
     @GET("products/search")
-    suspend fun searchProduct(@Query("q") title: String): Product
+    suspend fun searchProduct(@Query("q") title: String): ProductsResponse
 }

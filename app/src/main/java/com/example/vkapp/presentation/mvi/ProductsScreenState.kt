@@ -5,7 +5,6 @@ import com.example.vkapp.mviRealisation.UiState
 
 data class ProductsScreenState(
     val productsList: List<Product>,
-    val product: Product,
     val page: Int,
     val title: String
 ) : UiState {
@@ -13,16 +12,6 @@ data class ProductsScreenState(
         fun initial() = ProductsScreenState(
             productsList = listOf(),
             page = 1,
-            product = Product(
-                "",
-                "",
-                "",
-                0,
-                listOf(""),
-                0,
-                "",
-                ""
-            ),
             title = ""
         )
     }
