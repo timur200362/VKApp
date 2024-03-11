@@ -3,6 +3,7 @@ package com.example.vkapp.presentation.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -85,7 +86,6 @@ fun ProductsListScreen(
     onNavigateToDetail: (Int) -> Unit,
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -103,16 +103,11 @@ fun ProductsListScreen(
             )
             TextField(
                 value = viewModel.title.value,
-                onValueChange = {
-                    viewModel.title.value = it
-//                    val filteredProducts = state.originalProductsList.filter { product ->
-//                        product.title.contains(it, ignoreCase = true) || product.description.contains(it, ignoreCase = true)
-//                    }
-                   },
+                onValueChange = { viewModel.title.value = it },
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 40.dp, bottom = 30.dp, end = 30.dp)
-                    .clip(shape = RoundedCornerShape(8.dp)),
+                    .padding(horizontal = 15.dp, vertical = 10.dp)
+                    .clip(shape = RoundedCornerShape(14.dp)),
                 placeholder = { Text(text ="Search...") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
@@ -137,8 +132,8 @@ fun ProductsListScreen(
                 modifier = Modifier
                     .clickable(onClick = { onNavigateToDetail(productsList.id) })
                     .fillMaxWidth()
-                    .padding(vertical = 10.dp)
-                    .shadow(10.dp)
+                    .padding(horizontal = 15.dp, vertical = 10.dp)
+                    .shadow(5.dp)
             ){
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
@@ -151,6 +146,7 @@ fun ProductsListScreen(
                             .height(90.dp)
                             .width(90.dp)
                             .padding(end = 15.dp)
+                            .background(Color.White)
                     )
                     Column {
                         Text(
