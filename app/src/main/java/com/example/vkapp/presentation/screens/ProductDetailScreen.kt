@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
@@ -36,12 +37,12 @@ fun DisplayInfo(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val product = state.productsList.find { it.id == productId }
-
     if (product!=null){
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
         ) {
+            BasicText(text = state.productsList.map { it.id }.joinToString(","))
             AsyncImage(
                 model = product.images[1],
                 contentDescription = null,

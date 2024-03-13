@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface ApiService {
     @GET("products")
-    suspend fun loadProducts(@Query("skip") skip: Int, @Query("limit") limit: Int): ProductsResponse
+    suspend fun loadProducts(@Query("limit") limit: Int, @Query("skip") skip: Int): ProductsResponse
 
     @GET("products/search")
     suspend fun searchProduct(@Query("q") title: String): ProductsResponse

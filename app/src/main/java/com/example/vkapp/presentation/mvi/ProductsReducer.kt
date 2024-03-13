@@ -12,19 +12,25 @@ class ProductsReducer(
 ): Reducer<ProductsScreenState, ProductsScreenUiEvent>(initial) {
 
     override suspend fun reduce(
-        oldState: ProductsScreenState,
+        currentState: ProductsScreenState,
         event: ProductsScreenUiEvent
     ) {
         when (event) {
             is ProductsScreenUiEvent.GetProducts -> {
-                val productsList = getProductsUseCase.execute(event.limit, event.skip)
-                setState(oldState.copy(
-                    productsList = productsList,
-                ))
+                val productsList = getProductsUseCase.execute(currentState.page)
+                setState(currentState.copy(productsList = productsList))
             }
             is ProductsScreenUiEvent.SearchProduct -> {
                 val foundProducts = searchProductUseCase.execute(event.title)
-                setState(oldState.copy(foundProducts))
+                setState(currentState.copy(foundProducts))
+            }
+            is ProductsScreenUiEvent.PreviousPage -> {
+                setState(currentState.copy(page = currentState.page - 1))
+                sendEvent(ProductsScreenUiEvent.GetProducts)
+            }
+            is ProductsScreenUiEvent.NextPage -> {
+                setState(currentState.copy(page = currentState.page + 1))
+                sendEvent(ProductsScreenUiEvent.GetProducts)
             }
         }
     }

@@ -30,7 +30,7 @@ abstract class Reducer<S : UiState, E : UiEvent>(initialVal: S) {
         return newState
     }
 
-    abstract suspend fun reduce(oldState: S, event: E)
+    abstract suspend fun reduce(currentState: S, event: E)
 }
 interface UiState
 

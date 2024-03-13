@@ -21,14 +21,10 @@ class ProductsViewModel(
         searchProductUseCase
     )
 
-    private val limit = 20
-    private val skip = 0
-    private val page = 1
     val title = mutableStateOf("")
 
     init {
-        sendEvent(ProductsScreenUiEvent.GetProducts(limit, skip, page))
-        sendEvent(ProductsScreenUiEvent.SearchProduct(title.value))
+        sendEvent(ProductsScreenUiEvent.GetProducts)
     }
 
     override val state: StateFlow<ProductsScreenState>
@@ -44,6 +40,12 @@ class ProductsViewModel(
                 Log.e("ProductsViewModel - Get","Ошибка: $throwable")
             }
         }
+    }
+    fun nextPage(){
+        sendEvent(ProductsScreenUiEvent.NextPage)
+    }
+    fun previousPage(){
+        sendEvent(ProductsScreenUiEvent.PreviousPage)
     }
     fun searchProduct(title: String){
         viewModelScope.launch(Dispatchers.IO) {

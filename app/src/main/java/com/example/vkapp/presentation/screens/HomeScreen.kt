@@ -1,5 +1,6 @@
 package com.example.vkapp.presentation.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -127,10 +129,41 @@ fun ProductsListScreen(
                 textAlign = TextAlign.Center,
             )
         }
-        items(state.productsList) {productsList ->
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = {
+                    if (state.page > 1) {
+                        viewModel.previousPage()
+                    }
+                }) {
+                    Icon(
+                        Icons.AutoMirrored.Default.NavigateBefore,
+                        "BeforePage"
+                    )
+                }
+                Text(
+                    text = state.page.toString(),
+                    fontWeight = FontWeight.Bold
+
+                )
+                IconButton(onClick = {
+                    viewModel.nextPage()
+                }) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.NavigateNext,
+                        "NextPage"
+                    )
+                }
+            }
+        }
+        items(state.productsList) {product ->
             Card (
                 modifier = Modifier
-                    .clickable(onClick = { onNavigateToDetail(productsList.id) })
+                    .clickable(onClick = { onNavigateToDetail(product.id) })
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp, vertical = 10.dp)
                     .shadow(5.dp)
@@ -140,7 +173,7 @@ fun ProductsListScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
                     AsyncImage(
-                        model = productsList.thumbnail,
+                        model = product.thumbnail,
                         contentDescription = null,
                         modifier = Modifier
                             .height(90.dp)
@@ -150,12 +183,12 @@ fun ProductsListScreen(
                     )
                     Column {
                         Text(
-                            text = productsList.title,
+                            text = product.title,
                             modifier = Modifier.fillMaxWidth(),
                             fontWeight = FontWeight.Bold,
                         )
                         Text(
-                            text = productsList.description,
+                            text = product.description,
                             color = Color.Gray,
                             modifier = Modifier.fillMaxWidth(),
                             fontSize = 16.sp
