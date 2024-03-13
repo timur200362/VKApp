@@ -42,7 +42,6 @@ fun DisplayInfo(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
         ) {
-            BasicText(text = state.productsList.map { it.id }.joinToString(","))
             AsyncImage(
                 model = product.images[1],
                 contentDescription = null,
