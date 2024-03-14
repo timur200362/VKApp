@@ -8,10 +8,15 @@ class ProductsRepositoryImpl(
     private val apiService: ApiService
 ):ProductsRepository {
     override suspend fun getProducts(limit: Int, skip: Int): List<Product> {
-        return apiService.loadProducts(limit, skip).products
+        cachedListProducts = apiService.loadProducts(limit, skip).products
+        return cachedListProducts
     }
 
     override suspend fun searchProduct(title: String): List<Product> {
-        return apiService.searchProduct(title).products
+        cachedListProducts = apiService.searchProduct(title).products
+        return cachedListProducts
+    }
+    companion object {
+        var cachedListProducts = listOf<Product>()
     }
 }

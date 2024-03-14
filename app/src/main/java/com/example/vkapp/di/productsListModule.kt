@@ -6,7 +6,7 @@ import com.example.vkapp.data.repository.ProductsRepository
 import com.example.vkapp.domain.repository.ProductsRepositoryImpl
 import com.example.vkapp.domain.usecase.GetProductsUseCase
 import com.example.vkapp.domain.usecase.SearchProductUseCase
-import com.example.vkapp.presentation.mvi.ProductsViewModel
+import com.example.vkapp.presentation.mvi.home.ProductsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

@@ -1,6 +1,5 @@
-package com.example.vkapp.presentation.mvi
+package com.example.vkapp.presentation.mvi.home
 
-import com.example.vkapp.data.memory.Product
 import com.example.vkapp.domain.usecase.GetProductsUseCase
 import com.example.vkapp.domain.usecase.SearchProductUseCase
 import com.example.vkapp.mviRealisation.Reducer

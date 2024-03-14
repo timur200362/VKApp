@@ -1,28 +1,20 @@
 package com.example.vkapp.presentation.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.example.vkapp.presentation.mvi.ProductsViewModel
-import org.koin.androidx.compose.koinViewModel
+import com.example.vkapp.domain.repository.ProductsRepositoryImpl
 
 @Composable
 fun ProductDetailScreen(productId: Int) {
@@ -31,12 +23,9 @@ fun ProductDetailScreen(productId: Int) {
 
 @Composable
 fun DisplayInfo(
-    productId: Int,
-    viewModel: ProductsViewModel = koinViewModel()
+    productId: Int
 ){
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    val product = state.productsList.find { it.id == productId }
+    val product = ProductsRepositoryImpl.cachedListProducts.find { it.id == productId }
     if (product!=null){
         Column(
             modifier = Modifier

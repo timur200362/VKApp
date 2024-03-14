@@ -1,4 +1,4 @@
-package com.example.vkapp.presentation.mvi
+package com.example.vkapp.presentation.mvi.home
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
