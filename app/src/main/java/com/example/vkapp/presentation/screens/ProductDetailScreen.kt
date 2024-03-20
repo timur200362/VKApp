@@ -7,14 +7,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.vkapp.domain.repository.ProductsRepositoryImpl
+import com.example.vkapp.presentation.mvi.detail.ProductDetailViewModel
+import com.example.vkapp.presentation.mvi.home.ProductsViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProductDetailScreen(productId: Int) {
@@ -23,9 +28,14 @@ fun ProductDetailScreen(productId: Int) {
 
 @Composable
 fun DisplayInfo(
-    productId: Int
+    productId: Int,
+    viewModel: ProductDetailViewModel = koinViewModel()
 ){
-    val product = ProductsRepositoryImpl.cachedListProducts.find { it.id == productId }
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    viewModel.getDetailInfo(productId)
+
+    val product = state.product
     if (product!=null){
         Column(
             modifier = Modifier

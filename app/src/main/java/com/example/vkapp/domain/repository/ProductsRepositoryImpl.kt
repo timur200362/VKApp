@@ -16,6 +16,10 @@ class ProductsRepositoryImpl(
         cachedListProducts = apiService.searchProduct(title).products
         return cachedListProducts
     }
+
+    override suspend fun getProductDetail(id: Int): Product {
+        return cachedListProducts.find { it.id == id }!!
+    }
     companion object {
         var cachedListProducts = listOf<Product>()
     }
